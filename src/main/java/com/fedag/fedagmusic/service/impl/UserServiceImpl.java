@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
     public Mono<User> addUser(User user) {
         logger.info("Выполняется метод addUser");
         user.setCreated(LocalDateTime.now());
+        logger.info("Объект сохранен");
         return userRepository.save(user);
     }
 
