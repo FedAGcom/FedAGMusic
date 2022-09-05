@@ -24,8 +24,8 @@ public class PerformerServiceImpl implements PerformerService {
     }
 
     @Override
-    public Mono<Performer> updatePerformer(Performer performer) {
-        return performerRepository.findById(performer.getId())
+    public Mono<Performer> updatePerformer(Performer performer, Long performerId) {
+        return performerRepository.findById(performerId)
                 .map((newPerformer) -> {
                     newPerformer.setName(performer.getName());
                     return newPerformer;

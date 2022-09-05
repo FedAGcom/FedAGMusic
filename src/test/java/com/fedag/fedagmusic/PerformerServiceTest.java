@@ -70,7 +70,7 @@ public class PerformerServiceTest {
         Mockito.when(performerRepository.findById(24L)).thenReturn(Mono.just(updatePerformer));
         Mockito.when(performerRepository.save(updatePerformer)).thenReturn(Mono.just(updatePerformer));
 
-        Mono<Performer> result = performerService.updatePerformer(updatePerformer);
+        Mono<Performer> result = performerService.updatePerformer(updatePerformer,24L);
 
         StepVerifier.create(result)
                 .expectNext(new Performer(

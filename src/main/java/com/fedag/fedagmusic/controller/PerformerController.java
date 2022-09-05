@@ -30,9 +30,9 @@ public class PerformerController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @PutMapping()
-    public Mono<ResponseEntity<Performer>> updatePerformer(@RequestBody Performer performer) {
-        return performerService.updatePerformer(performer)
+    @PutMapping("/{id}")
+    public Mono<ResponseEntity<Performer>> updatePerformer(@RequestBody Performer performer, @PathVariable Long id) {
+        return performerService.updatePerformer(performer,id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }

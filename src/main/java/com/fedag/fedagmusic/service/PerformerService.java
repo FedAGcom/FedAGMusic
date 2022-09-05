@@ -9,7 +9,7 @@ public interface PerformerService {
 
     Mono<Performer> getPerformerById(Long performerId);
 
-    Mono<Performer> updatePerformer(Performer performer);
+    Mono<Performer> updatePerformer(Performer performer,Long performerId);
 
     Mono<Void> deletePerformerById(Long performerId);
 
