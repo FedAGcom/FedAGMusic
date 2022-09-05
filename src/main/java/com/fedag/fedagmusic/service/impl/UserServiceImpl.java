@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     Logger logger = LoggerFactory.getLogger("Logger");
-
     private final UserRepository userRepository;
 
     @Override
