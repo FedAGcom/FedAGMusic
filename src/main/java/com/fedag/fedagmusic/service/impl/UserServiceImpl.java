@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
+
     @Override
     public Mono<User> addUser(User user) {
         logger.info("Выполняется метод addUser");
