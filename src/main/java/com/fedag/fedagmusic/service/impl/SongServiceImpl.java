@@ -31,8 +31,8 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional
-    public Mono<Song> updateSong(Song song) {
-        return songRepository.findById(song.getId())
+    public Mono<Song> updateSong(Song song, Long id) {
+        return songRepository.findById(id)
                 .doOnNext(e -> e.setTitle(song.getTitle()))
                 .flatMap(songRepository::save);
     }

@@ -16,8 +16,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -56,15 +54,16 @@ class SongServiceImplTest {
     void updateSong() {
         Song song = new Song(1L, "qwe", LocalDateTime.now());
         when(songRepository.findById(1L)).thenReturn(Mono.just(song));
-        songServiceImpl.updateSong(song);
+        songServiceImpl.updateSong(song, 1L);
         verify(songRepository, times(1)).findById(song.getId());
     }
 
     @Test
     void deleteSongById() {
-        Song song = new Song(1L, "qwe", LocalDateTime.now());
-        songServiceImpl.deleteSongById(song.getId());
-        verify(songRepository, times(1)).deleteById(song.getId());
+        when(songRepository.deleteById(1L)).thenReturn(Mono.empty());
+        Mono<Void> voidMono = songServiceImpl.deleteSongById(1L);
+        Assertions.assertEquals(Mono.empty(), voidMono);
+        verify(songRepository, times(1)).deleteById(1L);
     }
 
     @Test
@@ -75,6 +74,5 @@ class SongServiceImplTest {
         when(songRepository.findAll()).thenReturn(Flux.just(song, song1));
         Flux<Song> all = songRepository.findAll();
         Assert.assertNotNull(all);
-
     }
 }

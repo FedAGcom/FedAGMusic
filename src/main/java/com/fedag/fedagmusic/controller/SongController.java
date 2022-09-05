@@ -3,10 +3,13 @@ package com.fedag.fedagmusic.controller;
 import com.fedag.fedagmusic.entities.Song;
 import com.fedag.fedagmusic.service.impl.SongServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Comparator;
 
 @RestController
 @RequestMapping("api/v1/songs")
@@ -28,22 +31,26 @@ public class SongController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @PutMapping
-    public Mono<ResponseEntity<Song>> updateSong(@RequestBody Song song) {
-        return songServiceImpl.updateSong(song)
+    @PutMapping("/{id}")
+    public Mono<ResponseEntity<Song>> updateSong(@RequestBody Song song, @PathVariable Long id) {
+        return songServiceImpl.updateSong(song, id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @DeleteMapping("/{id}")
     public Mono<ResponseEntity<Void>> deleteSongById(@PathVariable Long id) {
-        return songServiceImpl.deleteSongById(id)
-                .map(ResponseEntity.ok()::body)
-                .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
+        return songServiceImpl.getSongById(id)
+                .flatMap(s -> songServiceImpl.deleteSongById(s.getId())
+                        .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK))))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/list")
-    public Flux<Song> findAllSong() {
-        return songServiceImpl.findAll();
+    @GetMapping("/list/{page}/{pageSize}")
+    public Flux<Song> findAllSong(@PathVariable Long page, @PathVariable Long pageSize) {
+        return songServiceImpl.findAll()
+                .sort(Comparator.comparing(Song::getCreated).reversed())
+                .skip(page * pageSize)
+                .take(pageSize);
     }
 }
