@@ -1,4 +1,4 @@
-package com.fedag.fedagmusic;
+package com.fedag.fedagmusic.service.impl;
 
 import com.fedag.fedagmusic.entities.Performer;
 import com.fedag.fedagmusic.repository.PerformerRepository;
