@@ -2,6 +2,7 @@ package com.fedag.fedagmusic.service.impl;
 
 import com.fedag.fedagmusic.entities.Album;
 import com.fedag.fedagmusic.repository.AlbumRepository;
+import com.fedag.fedagmusic.service.AlbumService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AlbumServiceImpl implements AlbumService{
+public class AlbumServiceImpl implements AlbumService {
     private static final Logger logger = LoggerFactory.getLogger("Logger");
     private final AlbumRepository albumRepository;
 

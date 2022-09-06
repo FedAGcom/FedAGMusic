@@ -1,7 +1,7 @@
 package com.fedag.fedagmusic.controller;
 
 import com.fedag.fedagmusic.entities.Album;
-import com.fedag.fedagmusic.service.impl.AlbumService;
+import com.fedag.fedagmusic.service.AlbumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

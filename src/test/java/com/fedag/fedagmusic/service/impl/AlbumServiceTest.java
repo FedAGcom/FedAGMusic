@@ -1,8 +1,7 @@
-package com.fedag.fedagmusic;
+package com.fedag.fedagmusic.service.impl;
 
 import com.fedag.fedagmusic.entities.Album;
 import com.fedag.fedagmusic.repository.AlbumRepository;
-import com.fedag.fedagmusic.service.impl.AlbumServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
