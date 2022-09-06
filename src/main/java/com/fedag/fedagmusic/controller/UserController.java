@@ -2,7 +2,7 @@ package com.fedag.fedagmusic.controller;
 
 
 import com.fedag.fedagmusic.entities.User;
-import com.fedag.fedagmusic.service.impl.UserService;
+import com.fedag.fedagmusic.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

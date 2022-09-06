@@ -2,6 +2,7 @@ package com.fedag.fedagmusic.service.impl;
 
 import com.fedag.fedagmusic.entities.User;
 import com.fedag.fedagmusic.repository.UserRepository;
+import com.fedag.fedagmusic.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

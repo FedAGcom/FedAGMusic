@@ -1,4 +1,4 @@
-package com.fedag.fedagmusic.service.impl;
+package com.fedag.fedagmusic.service;
 
 import com.fedag.fedagmusic.entities.Album;
 import reactor.core.publisher.Mono;
