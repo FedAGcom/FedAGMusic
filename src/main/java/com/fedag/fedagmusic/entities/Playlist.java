@@ -1,12 +1,14 @@
 package com.fedag.fedagmusic.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,9 +24,9 @@ public class Playlist {
     private String title;
     @Column
     private LocalDateTime created;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-//    @OneToMany
-//    private Song songs;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Mono<User> user;
+    @OneToMany(fetch = FetchType.LAZY)
+    private Flux<Song> songs;
 }
