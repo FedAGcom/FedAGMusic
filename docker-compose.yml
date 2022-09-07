@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  # Application fedagmusic
+  fedagmusic:
+    container_name: fm-app
+    build: ./
+    image: fedagmusic:latest
+    restart: always
+    ports:
+      - 8080:8080
+
+  #  PostgreSQL
+  postgres:
+    container_name: fm-postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: "fm-postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+
+    ports:
+      - "5432:5432"
+  #  PostgreSQL
+  #При запуске этого скрипта рядом с ним создастся директория pgdata,
+  # где будут располагаться файлы БД.
+
+
+
