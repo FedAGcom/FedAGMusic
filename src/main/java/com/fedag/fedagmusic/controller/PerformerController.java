@@ -19,17 +19,17 @@ import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API + VERSION + PERFORMER_URL)
-@Tag(name = "Performer", description = "работа с исполнителем")
+@Tag(name = "Performer", description = "Работа с исполнителем")
 public class PerformerController {
 
     private final PerformerService performerService;
 
-    @Operation(summary = "создание исполнителя")
-    @ApiResponse(responseCode = "200", description = "исполнитель создан",
+    @Operation(summary = "Создание исполнителя")
+    @ApiResponse(responseCode = "200", description = "Исполнитель создан",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "ошибка сервера",
+    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping()
     public Mono<ResponseEntity<Performer>> createPerformer(@RequestBody Performer performer) {
@@ -38,12 +38,12 @@ public class PerformerController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "получение исполнителя по ID")
-    @ApiResponse(responseCode = "200", description = "исполнитель найден",
+    @Operation(summary = "Получение исполнителя по ID")
+    @ApiResponse(responseCode = "200", description = "Исполнитель найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "204", description = "исполнитель не найден",
+    @ApiResponse(responseCode = "204", description = "Исполнитель не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
     public Mono<ResponseEntity<Performer>> getPerformerById(@PathVariable Long id) {
@@ -52,12 +52,12 @@ public class PerformerController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "обновление исполнителя")
-    @ApiResponse(responseCode = "200", description = "исполнитель обновлён",
+    @Operation(summary = "Обновление исполнителя")
+    @ApiResponse(responseCode = "200", description = "Исполнитель обновлён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "исполнитель не найден",
+    @ApiResponse(responseCode = "404", description = "Исполнитель не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PutMapping(ID)
     public Mono<ResponseEntity<Performer>> updatePerformer(@RequestBody Performer performer, @PathVariable Long id) {
@@ -66,12 +66,12 @@ public class PerformerController {
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
-    @Operation(summary = "удаление исполнителя по ID")
-    @ApiResponse(responseCode = "200", description = "исполнитель найден",
+    @Operation(summary = "Удаление исполнителя по ID")
+    @ApiResponse(responseCode = "200", description = "Исполнитель найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "исполнитель не найден",
+    @ApiResponse(responseCode = "404", description = "Исполнитель не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(ID)
     public Mono<ResponseEntity<Void>> deletePerformerById(@PathVariable Long id) {

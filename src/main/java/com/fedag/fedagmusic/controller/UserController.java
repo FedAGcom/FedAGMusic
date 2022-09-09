@@ -19,17 +19,17 @@ import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
 @RestController
 @RequestMapping(API + VERSION + USER_URL)
 @RequiredArgsConstructor
-@Tag(name = "User", description = "работа с альбомом")
+@Tag(name = "User", description = "Работа с пользователем")
 public class UserController {
 
     private final UserService userService;
 
-    @Operation(summary = "получение пользователя по ID")
-    @ApiResponse(responseCode = "200", description = "пользователь найден",
+    @Operation(summary = "Получение пользователя по ID")
+    @ApiResponse(responseCode = "200", description = "Пользователь найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "204", description = "пользователь не найден",
+    @ApiResponse(responseCode = "204", description = "Пользователь не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
     public Mono<ResponseEntity<User>> getUserById(@PathVariable Long id) {
@@ -38,12 +38,12 @@ public class UserController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "создание пользователя")
-    @ApiResponse(responseCode = "200", description = "пользователь создан",
+    @Operation(summary = "Создание пользователя")
+    @ApiResponse(responseCode = "200", description = "Пользователь создан",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "ошибка сервера",
+    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping
     public Mono<ResponseEntity<User>> addUser(@RequestBody User user) {
@@ -52,12 +52,12 @@ public class UserController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "обновление пользователя по ID")
-    @ApiResponse(responseCode = "200", description = "пользователь обновлён",
+    @Operation(summary = "Обновление пользователя по ID")
+    @ApiResponse(responseCode = "200", description = "Пользователь обновлён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "пользователь не найден",
+    @ApiResponse(responseCode = "404", description = "Пользователь не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PutMapping(ID)
     public Mono<ResponseEntity<User>> updateUserById(@RequestBody User user, @PathVariable Long id) {
@@ -66,12 +66,12 @@ public class UserController {
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
-    @Operation(summary = "удаление пользователя по ID")
-    @ApiResponse(responseCode = "200", description = "пользователь удалён",
+    @Operation(summary = "Удаление пользователя по ID")
+    @ApiResponse(responseCode = "200", description = "Пользователь удалён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "пользователь не найден",
+    @ApiResponse(responseCode = "404", description = "Пользователь не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(ID)
     public Mono<ResponseEntity<Void>> deleteUserById(@PathVariable("id") Long id) {

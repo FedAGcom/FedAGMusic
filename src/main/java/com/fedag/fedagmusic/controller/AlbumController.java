@@ -18,19 +18,19 @@ import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
 @RestController
 @RequestMapping(API + VERSION + ALBUM_URL)
 @RequiredArgsConstructor
-@Tag(name = "Album", description = "работа с альбомом")
+@Tag(name = "Album", description = "Работа с альбомом")
 public class AlbumController {
 
     private final AlbumService albumService;
 
-    @Operation(summary = "получение альбома по ID")
-    @ApiResponse(responseCode = "200", description = "альбом найден",
+    @Operation(summary = "Получение альбома по ID")
+    @ApiResponse(responseCode = "200", description = "Альбом найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "ошибка сервера",
+    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "204", description = "альбом не найден",
+    @ApiResponse(responseCode = "204", description = "Альбом не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
     public Mono<ResponseEntity<Album>> getAlbumById(@PathVariable Long id) {
@@ -39,12 +39,12 @@ public class AlbumController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "создание альбома")
-    @ApiResponse(responseCode = "200", description = "альбом создан",
+    @Operation(summary = "Создание альбома")
+    @ApiResponse(responseCode = "200", description = "Альбом создан",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "ошибка сервера",
+    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping
     public Mono<ResponseEntity<Album>> addAlbum(@RequestBody Album album) {
@@ -53,14 +53,14 @@ public class AlbumController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "обновление альбома по ID")
-    @ApiResponse(responseCode = "200", description = "альбом обновлён",
+    @Operation(summary = "Обновление альбома по ID")
+    @ApiResponse(responseCode = "200", description = "Альбом обновлён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "ошибка сервера",
+    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "альбом не найден",
+    @ApiResponse(responseCode = "404", description = "Альбом не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PutMapping(ID)
     public Mono<ResponseEntity<Album>> updateAlbumById(@PathVariable Long id,
@@ -70,12 +70,12 @@ public class AlbumController {
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
-    @Operation(summary = "удаление альбома")
-    @ApiResponse(responseCode = "200", description = "альбом удалён",
+    @Operation(summary = "Удаление альбома")
+    @ApiResponse(responseCode = "200", description = "Альбом удалён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "альбом не найден",
+    @ApiResponse(responseCode = "404", description = "Альбом не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(ID)
     public Mono<ResponseEntity<Void>> deleteAlbumById(@PathVariable Long id) {

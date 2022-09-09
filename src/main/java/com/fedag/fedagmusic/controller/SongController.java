@@ -21,16 +21,16 @@ import java.util.Comparator;
 @RestController
 @RequestMapping(API + VERSION + SONG_URL)
 @RequiredArgsConstructor
-@Tag(name = "Song", description = "работа с песней")
+@Tag(name = "Song", description = "Работа с песней")
 public class SongController {
     private final SongServiceImpl songServiceImpl;
 
-    @Operation(summary = "получение песни по ID")
-    @ApiResponse(responseCode = "200", description = "песня найдена",
+    @Operation(summary = "Получение песни по ID")
+    @ApiResponse(responseCode = "200", description = "Песня найдена",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "204", description = "песня не найдена",
+    @ApiResponse(responseCode = "204", description = "Песня не найдена",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
     public Mono<ResponseEntity<Song>> getSongById(@PathVariable Long id) {
@@ -39,12 +39,12 @@ public class SongController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "создание песни по ID")
-    @ApiResponse(responseCode = "200", description = "песня создана",
+    @Operation(summary = "Создание песни по ID")
+    @ApiResponse(responseCode = "200", description = "Песня создана",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "204", description = "песня не найдена",
+    @ApiResponse(responseCode = "204", description = "Песня не найдена",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping
     public Mono<ResponseEntity<Song>> createSong(@RequestBody Song song) {
@@ -53,12 +53,12 @@ public class SongController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "обновление песни по ID")
-    @ApiResponse(responseCode = "200", description = "песня обновлена",
+    @Operation(summary = "Обновление песни по ID")
+    @ApiResponse(responseCode = "200", description = "Песня обновлена",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "песня не найдена",
+    @ApiResponse(responseCode = "404", description = "Песня не найдена",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PutMapping(ID)
     public Mono<ResponseEntity<Song>> updateSong(@RequestBody Song song, @PathVariable Long id) {
@@ -67,12 +67,12 @@ public class SongController {
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
-    @Operation(summary = "удаление песни по ID")
-    @ApiResponse(responseCode = "200", description = "песня удалена",
+    @Operation(summary = "Удаление песни по ID")
+    @ApiResponse(responseCode = "200", description = "Песня удалена",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "204", description = "песня не найдена",
+    @ApiResponse(responseCode = "204", description = "Песня не найдена",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(ID)
     public Mono<ResponseEntity<Void>> deleteSongById(@PathVariable Long id) {
@@ -82,12 +82,12 @@ public class SongController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @Operation(summary = "получение страницы с песнями")
-    @ApiResponse(responseCode = "200", description = "песни получены",
+    @Operation(summary = "Получение страницы с песнями")
+    @ApiResponse(responseCode = "200", description = "Песни получены",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "ошибка сервера",
+    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "страница не найдена",
+    @ApiResponse(responseCode = "404", description = "Страница не найдена",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(LIST_URL + PAGE_URL + PAGE_SIZE_URL)
     public Flux<Song> findAllSong(@PathVariable Long page, @PathVariable Long pageSize) {

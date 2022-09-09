@@ -21,16 +21,16 @@ import java.util.Comparator;
 @RestController
 @RequestMapping(API + VERSION + PLAYLIST_URL)
 @RequiredArgsConstructor
-@Tag(name = "Playlist", description = "работа с прейлистом")
+@Tag(name = "Playlist", description = "Работа с плейлистом")
 public class PlaylistController {
     private final PlaylistServiceImpl playlistServiceImpl;
 
-    @Operation(summary = "получение плейлиста по ID")
-    @ApiResponse(responseCode = "200", description = "плейлист найден",
+    @Operation(summary = "Получение плейлиста по ID")
+    @ApiResponse(responseCode = "200", description = "Плейлист найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "204", description = "плейлист не найден",
+    @ApiResponse(responseCode = "204", description = "Плейлист не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
     public Mono<ResponseEntity<Playlist>> getPlaylistById(@PathVariable Long id) {
@@ -39,12 +39,12 @@ public class PlaylistController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "создание плейлиста")
-    @ApiResponse(responseCode = "200", description = "плейлист создан",
+    @Operation(summary = "Создание плейлиста")
+    @ApiResponse(responseCode = "200", description = "Плейлист создан",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "ошибка сервера",
+    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping
     public Mono<ResponseEntity<Playlist>> createPlaylist(@RequestBody Playlist playlist) {
@@ -53,12 +53,12 @@ public class PlaylistController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "обновление плейлиста")
-    @ApiResponse(responseCode = "200", description = "плейлист обновлён",
+    @Operation(summary = "Обновление плейлиста")
+    @ApiResponse(responseCode = "200", description = "Плейлист обновлён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "плейлист не найден",
+    @ApiResponse(responseCode = "404", description = "Плейлист не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PutMapping(ID)
     public Mono<ResponseEntity<Playlist>> updatePlaylist(@RequestBody Playlist playlist,
@@ -68,14 +68,14 @@ public class PlaylistController {
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
-    @Operation(summary = "удаление плейлиста по ID")
-    @ApiResponse(responseCode = "200", description = "плейлист удалён",
+    @Operation(summary = "Удаление плейлиста по ID")
+    @ApiResponse(responseCode = "200", description = "Плейлист удалён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "ошибка клиента",
+    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "ошибка сервера",
+    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "плейлист не найден",
+    @ApiResponse(responseCode = "404", description = "Плейлист не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(ID)
     public Mono<ResponseEntity<Void>> deletePlaylist(@PathVariable Long id) {
@@ -85,12 +85,12 @@ public class PlaylistController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @Operation(summary = "получение страницы с плейлистами")
-    @ApiResponse(responseCode = "200", description = "плейлисты получены",
+    @Operation(summary = "Получение страницы с плейлистами")
+    @ApiResponse(responseCode = "200", description = "Плейлисты получены",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "ошибка сервера",
+    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "404", description = "страница не найдена",
+    @ApiResponse(responseCode = "404", description = "Страница не найдена",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(LIST_URL + PAGE_URL + PAGE_SIZE_URL)
     public Flux<Playlist> findAll(@PathVariable Long page, @PathVariable Long pageSize) {
