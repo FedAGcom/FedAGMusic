@@ -39,7 +39,7 @@ public class SongController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "Создание песни по ID")
+    @Operation(summary = "Создание песни")
     @ApiResponse(responseCode = "200", description = "Песня создана",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @ApiResponse(responseCode = "400", description = "Ошибка клиента",

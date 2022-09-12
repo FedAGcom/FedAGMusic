@@ -52,7 +52,7 @@ public class PerformerController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "Обновление исполнителя")
+    @Operation(summary = "Обновление исполнителя по ID")
     @ApiResponse(responseCode = "200", description = "Исполнитель обновлён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @ApiResponse(responseCode = "400", description = "Ошибка клиента",

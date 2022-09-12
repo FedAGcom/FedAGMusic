@@ -70,7 +70,7 @@ public class AlbumController {
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
-    @Operation(summary = "Удаление альбома")
+    @Operation(summary = "Удаление альбома по ID")
     @ApiResponse(responseCode = "200", description = "Альбом удалён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @ApiResponse(responseCode = "400", description = "Ошибка клиента",

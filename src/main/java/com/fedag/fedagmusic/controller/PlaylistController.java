@@ -53,7 +53,7 @@ public class PlaylistController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "Обновление плейлиста")
+    @Operation(summary = "Обновление плейлиста по ID")
     @ApiResponse(responseCode = "200", description = "Плейлист обновлён",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @ApiResponse(responseCode = "400", description = "Ошибка клиента",
