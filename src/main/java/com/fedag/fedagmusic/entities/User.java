@@ -6,7 +6,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 
-import javax.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class User  {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+ //   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -33,7 +33,7 @@ public class User  {
     private String lastName;
 
     @Column
-    @Enumerated(EnumType.STRING)
+            //   @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Column
