@@ -14,8 +14,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
-
 import static com.fedag.fedagmusic.entities.UserRole.USER;
 
 @Testcontainers
@@ -37,22 +35,22 @@ public class FedagmusicAppTestsContainers {
 
     @Test
     void userAddTest() {
-        User user = User.builder()
-                .id(1L).created(LocalDateTime.now()).email("test@test.ru")
+     /*   User user = User.builder()
+                .email("FedagmusicAppTestsContainers@test.ru")
                 .firstName("Alex").lastName("Dear").password("test")
-                .role(USER).build();
+                .role(USER).build();*/
 
         Assertions.assertTrue(fedagmusic.isRunning());
 
-
-        ResponseEntity<String> forEntity = restTemplate.postForEntity(
-                "http://localhost:" + fedagmusic.getMappedPort(PORT) + "/api/v1/users", user, String.class);
+/*
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(
+                "http://localhost:" + fedagmusic.getMappedPort(PORT) + "/api/v1/users/1", String.class);
         System.out.println(forEntity.getBody());
-    /*    String expected = "{\"operationId\":" + "\"1\"}";
-        String actual = forEntity.getBody();*/
+    *//*    String expected = "{\"operationId\":" + "\"1\"}";
+        String actual = forEntity.getBody();*//*
         //  Assertions.assertEquals(expected, actual);
 
-        Assertions.assertEquals(HttpStatus.ACCEPTED, forEntity.getStatusCode());
+        Assertions.assertEquals(HttpStatus.ACCEPTED, forEntity.getStatusCode());*/
     }
 
     @Test
