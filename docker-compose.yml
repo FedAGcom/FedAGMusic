@@ -6,12 +6,16 @@ services:
     build: ./
     image: fedagmusic:latest
     restart: always
+    environment:
+      spring_r2dbc_url: r2dbc:postgresql://postgres-bd:5432/fm-postgres
     ports:
       - 8080:8080
+    depends_on:
+      - postgres
 
   #  PostgreSQL
   postgres:
-    container_name: fm-postgres
+    container_name: postgres-bd
     image: postgres:latest
     restart: always
     environment:
@@ -25,6 +29,3 @@ services:
   #  PostgreSQL
   #При запуске этого скрипта рядом с ним создастся директория pgdata,
   # где будут располагаться файлы БД.
-
-
-
