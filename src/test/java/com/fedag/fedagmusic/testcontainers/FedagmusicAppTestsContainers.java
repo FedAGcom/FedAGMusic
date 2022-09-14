@@ -1,5 +1,5 @@
 
-package com.fedag.fedagmusic;
+package com.fedag.fedagmusic.testcontainers;
 
 import com.fedag.fedagmusic.entities.User;
 import org.junit.jupiter.api.Assertions;
@@ -10,9 +10,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +26,10 @@ public class FedagmusicAppTestsContainers {
 
     @Autowired
     TestRestTemplate restTemplate;
+
+    @Container
+    public static PostgreSQLContainer postgreSQLContainer
+            = PostgresTestContainer.getInstance();
 
     @Container
     public static GenericContainer<?> fedagmusic = new GenericContainer<>("fedagmusic:latest")
@@ -44,23 +48,25 @@ public class FedagmusicAppTestsContainers {
         ResponseEntity<String> forEntity = restTemplate.postForEntity(
                 "http://localhost:" + fedagmusic.getMappedPort(PORT) + "/api/v1/users", user, String.class);
         System.out.println(forEntity.getBody());
-        String expected = "{\"operationId\":" + "\"1\"}";
-       String actual = forEntity.getBody();
-      //  Assertions.assertEquals(expected, actual);
+    /*    String expected = "{\"operationId\":" + "\"1\"}";
+        String actual = forEntity.getBody();*/
+        //  Assertions.assertEquals(expected, actual);
 
-        Assertions.assertEquals(HttpStatus.OK, forEntity.getStatusCode());
+        Assertions.assertEquals(HttpStatus.ACCEPTED, forEntity.getStatusCode());
     }
-/*
-    @Test
-    void confirmOperationTest() {
-        ConfirmOperation request = new ConfirmOperation("1","0000");
 
-        ResponseEntity<String> forEntity = restTemplate.postForEntity(
-                "http://localhost:" + myapp.getMappedPort(PORT) + "/confirmOperation", request, String.class);
-        System.out.println(forEntity.getBody());
-        String expected = "{\"operationId\":" + "\"1\"}";
-        String actual = forEntity.getBody();
-        Assertions.assertEquals(expected, actual);
-    }*/
+    @Test
+    void swaggerTest() {
+
+        ResponseEntity<String> swagger = restTemplate.getForEntity(
+                "http://localhost:" + fedagmusic.getMappedPort(PORT) + "/swagger-ui.html", String.class);
+
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, swagger.getStatusCode());
+
+//        System.out.println(swagger.getBody());
+//        String expected = "{\"operationId\":" + "\"1\"}";
+//        String actual = swagger.getBody();
+//        Assertions.assertEquals(expected, actual);
+    }
 }
 
