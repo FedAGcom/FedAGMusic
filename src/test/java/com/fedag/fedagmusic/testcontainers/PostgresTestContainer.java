@@ -22,7 +22,7 @@ public class PostgresTestContainer extends PostgreSQLContainer<PostgresTestConta
     @Override
     public void start() {
         super.start();
-        System.setProperty("r2dbc:postgresql://localhost:5432/fm-postgres", container.getJdbcUrl());
+        System.setProperty("r2dbc:postgresql://postgres:5432/fm-postgres", container.getJdbcUrl());
         System.setProperty("postgres", container.getUsername());
         System.setProperty("postgres", container.getPassword());
     }
