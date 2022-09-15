@@ -40,6 +40,12 @@
 			<artifactId>spring-boot-starter-data-r2dbc</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>LATEST</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/io.r2dbc/r2dbc-postgresql -->
 		<dependency>
 			<groupId>io.r2dbc</groupId>

@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-import static com.fedag.fedagmusic.entities.UserRole.USER;
+import static com.fedag.fedagmusic.entities.UserRole.ROLE_USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -37,7 +37,7 @@ public class UserServiceTest {
         users = User.builder()
                          .id(1L).created(LocalDateTime.now()).email("test@test.ru")
                          .firstName("Alex").lastName("Dear").password("123")
-                         .role(USER).build();
+                         .role(ROLE_USER).build();
     }
 
     @Test
@@ -66,7 +66,7 @@ public class UserServiceTest {
 
     @Test
     public void updateUserTest(){
-        User newUser = new User(1L, "333@qwer.ru", "3333", "Bob","Chack", USER, LocalDateTime.now());
+        User newUser = new User(1L, "333@qwer.ru", "3333", "Bob","Chack", ROLE_USER, LocalDateTime.now());
         Mockito.when(userRepository.findById(1L)).thenReturn(Mono.just(users));
         userServiceImpl.updateUser(newUser, 1L);
         Mockito.verify(userRepository, times(1)).findById(users.getId());
