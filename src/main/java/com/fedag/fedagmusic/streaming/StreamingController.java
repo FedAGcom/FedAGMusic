@@ -17,11 +17,11 @@ public class StreamingController {
         return streamingService.getAudio(title);
     }
 
-    @GetMapping(value = "audioWeb")
-    public Mono<Resource> getWebAudio(@RequestHeader("Range") String range) {
-        System.out.println("range in bytes(): " + range);
+    @GetMapping(value = "audioWeb", produces = "audio/mp3")
+    public Mono<Resource> getWebAudio() {
         return streamingService.getWebAudio();
     }
+
     @PostMapping(value = "downloadAudio")
     public Mono<Void> downloadAudio() {
         return streamingService.downloadAudio();
