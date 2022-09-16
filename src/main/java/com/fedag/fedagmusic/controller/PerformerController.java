@@ -5,6 +5,7 @@ import com.fedag.fedagmusic.service.PerformerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -17,6 +18,7 @@ public class PerformerController {
     private final PerformerService performerService;
 
     @PostMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<Performer>> createPerformer(@RequestBody Performer performer) {
         return performerService.createPerformer(performer)
                 .map(ResponseEntity.ok()::body)
@@ -24,6 +26,7 @@ public class PerformerController {
     }
 
     @GetMapping("/{id}")
+   // @PreAuthorize("hasRole('USER')")
     public Mono<ResponseEntity<Performer>> getPerformerById(@PathVariable Long id) {
         return performerService.getPerformerById(id)
                 .map(ResponseEntity.ok()::body)
@@ -31,6 +34,7 @@ public class PerformerController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<Performer>> updatePerformer(@RequestBody Performer performer, @PathVariable Long id) {
         return performerService.updatePerformer(performer,id)
                 .map(ResponseEntity.ok()::body)
@@ -38,6 +42,7 @@ public class PerformerController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<Void>> deletePerformerById(@PathVariable Long id) {
         return performerService.getPerformerById(id)
                 .flatMap(s ->
