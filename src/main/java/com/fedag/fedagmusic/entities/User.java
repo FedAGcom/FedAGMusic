@@ -7,11 +7,6 @@ import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +19,7 @@ import java.util.List;
 @Builder
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+ //   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -40,7 +35,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column
-    @Enumerated(EnumType.STRING)
+            //   @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Column

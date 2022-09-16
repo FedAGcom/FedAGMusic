@@ -2,11 +2,9 @@ package com.fedag.fedagmusic.entities;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,7 +14,6 @@ import java.time.LocalDateTime;
 @Table(name = "playlist")
 public class Playlist {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String title;
