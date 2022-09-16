@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -32,6 +33,7 @@ public class UserController {
     @ApiResponse(responseCode = "204", description = "Пользователь не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<User>> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(ResponseEntity.ok()::body)
@@ -46,6 +48,7 @@ public class UserController {
     @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping
+    //@PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<User>> addUser(@RequestBody User user) {
         return userService.addUser(user)
                 .map(ResponseEntity.accepted()::body)
@@ -60,6 +63,7 @@ public class UserController {
     @ApiResponse(responseCode = "404", description = "Пользователь не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PutMapping(ID)
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<User>> updateUserById(@RequestBody User user, @PathVariable Long id) {
         return userService.updateUser(user, id)
                 .map(ResponseEntity.ok()::body)
@@ -74,6 +78,7 @@ public class UserController {
     @ApiResponse(responseCode = "404", description = "Пользователь не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(ID)
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<Void>> deleteUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id)
                 .flatMap(s ->

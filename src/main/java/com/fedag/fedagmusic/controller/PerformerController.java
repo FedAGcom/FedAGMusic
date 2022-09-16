@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -32,11 +33,13 @@ public class PerformerController {
     @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<Performer>> createPerformer(@RequestBody Performer performer) {
         return performerService.createPerformer(performer)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
+
 
     @Operation(summary = "Получение исполнителя по ID")
     @ApiResponse(responseCode = "200", description = "Исполнитель найден",
@@ -46,11 +49,13 @@ public class PerformerController {
     @ApiResponse(responseCode = "204", description = "Исполнитель не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
+   // @PreAuthorize("hasRole('USER')")
     public Mono<ResponseEntity<Performer>> getPerformerById(@PathVariable Long id) {
         return performerService.getPerformerById(id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
+
 
     @Operation(summary = "Обновление исполнителя по ID")
     @ApiResponse(responseCode = "200", description = "Исполнитель обновлён",
@@ -60,6 +65,7 @@ public class PerformerController {
     @ApiResponse(responseCode = "404", description = "Исполнитель не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PutMapping(ID)
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<Performer>> updatePerformer(@RequestBody Performer performer, @PathVariable Long id) {
         return performerService.updatePerformer(performer, id)
                 .map(ResponseEntity.ok()::body)
@@ -74,6 +80,7 @@ public class PerformerController {
     @ApiResponse(responseCode = "404", description = "Исполнитель не найден",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(ID)
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<Void>> deletePerformerById(@PathVariable Long id) {
         return performerService.getPerformerById(id)
                 .flatMap(s ->

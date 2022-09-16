@@ -4,20 +4,22 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-
-
-import javax.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
-@Getter
-@Setter
+
 @Data
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class User  {
+public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+ //   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -33,21 +35,42 @@ public class User  {
     private String lastName;
 
     @Column
-    @Enumerated(EnumType.STRING)
+            //   @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Column
     private LocalDateTime created;
 
 
-    public User(Long id, String email, String password, String firstName, String lastName, UserRole role, LocalDateTime created) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-        this.created = created;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        // username equals email
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     //    @ManyToMany
