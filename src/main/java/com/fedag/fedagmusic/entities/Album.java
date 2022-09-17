@@ -2,8 +2,10 @@ package com.fedag.fedagmusic.entities;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,17 +17,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Album {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column
     private String title;
-
     @Column
     private LocalDateTime created;
+    @Transient
+    private Performer performer;
 
-    //    @Column
-//    @JoinColumn
-//    private Long performer_id;
-
+    public Album(Long id, String title, LocalDateTime created) {
+        this.id = id;
+        this.title = title;
+        this.created = created;
+    }
 }

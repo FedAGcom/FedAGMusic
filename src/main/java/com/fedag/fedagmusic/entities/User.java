@@ -2,22 +2,23 @@ package com.fedag.fedagmusic.entities;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @Data
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class User  {
+public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -33,12 +34,22 @@ public class User  {
     private String lastName;
 
     @Column
-    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Column
     private LocalDateTime created;
 
+    @Transient
+    private List<Performer> performer;
+
+    public User(Long id, String email, String password, String firstName, String lastName, LocalDateTime created) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.created = created;
+    }
 
     public User(Long id, String email, String password, String firstName, String lastName, UserRole role, LocalDateTime created) {
         this.id = id;
@@ -50,6 +61,10 @@ public class User  {
         this.created = created;
     }
 
+    public User(Long id, String email) {
+        this.id = id;
+        this.email = email;
+    }
     //    @ManyToMany
 //    @JoinColumn
 //    private Playlist playlistIds;

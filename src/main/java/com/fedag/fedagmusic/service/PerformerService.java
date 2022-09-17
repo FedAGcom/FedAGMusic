@@ -13,4 +13,6 @@ public interface PerformerService {
 
     Mono<Void> deletePerformerById(Long performerId);
 
+    Mono<Void> subscribeToPerformer(String name);
+
 }

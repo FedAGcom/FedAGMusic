@@ -2,18 +2,21 @@ package com.fedag.fedagmusic.controller;
 
 
 import com.fedag.fedagmusic.entities.User;
+import com.fedag.fedagmusic.repository.impl.UserRepoImpl;
 import com.fedag.fedagmusic.service.UserService;
+import com.fedag.fedagmusic.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
-
+    private final UserRepoImpl userRepo;
     private final UserService userService;
 
     @GetMapping(value = "/{id}")
@@ -39,14 +42,17 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public Mono<ResponseEntity<Void>> deleteUserById(@PathVariable("id") Long id) {
-               return userService.getUserById(id)
+        return userService.getUserById(id)
                 .flatMap(s ->
                         userService.deleteUserById(s.getId())
                                 .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                 )
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
-
+    @GetMapping("/withPerformer/{id}")
+    public Flux<User> findUserByIdWithPerformer(@PathVariable Long id) {
+        return userRepo.findUserByIdWithPerformer(id);
     }
 
 }

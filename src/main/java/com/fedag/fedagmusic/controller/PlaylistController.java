@@ -1,6 +1,7 @@
 package com.fedag.fedagmusic.controller;
 
 import com.fedag.fedagmusic.entities.Playlist;
+import com.fedag.fedagmusic.repository.impl.PlaylistRepoImpl;
 import com.fedag.fedagmusic.service.impl.PlaylistServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,11 @@ import java.util.Comparator;
 @RequiredArgsConstructor
 public class PlaylistController {
     private final PlaylistServiceImpl playlistServiceImpl;
+    private final PlaylistRepoImpl playlistRepo;
 
     @GetMapping("/{id}")
     public Mono<ResponseEntity<Playlist>> getPlaylistById(@PathVariable Long id) {
-        return playlistServiceImpl.getPlaylistById(id)
+        return playlistRepo.findPlaylistById(id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
@@ -49,7 +51,7 @@ public class PlaylistController {
 
     @GetMapping("/list/{page}/{pageSize}")
     public Flux<Playlist> findAll(@PathVariable Long page, @PathVariable Long pageSize) {
-        return playlistServiceImpl.findAll()
+        return playlistRepo.findAllPlaylist()
                 .sort(Comparator.comparing(Playlist::getCreated).reversed())
                 .skip(page * pageSize)
                 .take(pageSize);
