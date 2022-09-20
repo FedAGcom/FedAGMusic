@@ -14,7 +14,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static com.fedag.fedagmusic.entities.UserRole.USER;
+import static com.fedag.fedagmusic.entities.UserRole.ROLE_USER;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

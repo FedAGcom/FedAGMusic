@@ -9,9 +9,34 @@
 - Выход из приложения и автоматическое удаление Docker контейнера: в терминале нажать "Ctrl+C"
 
 ## Вариант 2 запуск с помощью файла docker-compose.yml (Dockerfile) (App + Postgres)
-- Собираем jar архив с нашим spring webflux приложением: ```mvn clean -Dskiptest package```
+- Собираем jar архив с нашим spring webflux приложением: 
+- ```mvn clean package -Dskiptests``` 
+- or ```mvn clean package -Dmaven.test.skip```
 - Запускаем терминал и выполнить команду: ```docker-compose up```
 - Проверяем c помощью postman: ```http://localhost:8080```
 - Выход из приложения: в терминале нажать "Ctrl+C" 
 - Удаление Docker контейнера: ```docker-compose down```
 
+```
+curl --location --request POST 'http://localhost:8080/api/v1/users/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+"email": "anat@admin.ru",
+"lastName": "Anat",
+"password": "123",
+"firstName": "Vas",
+"role": "ROLE_ADMIN"
+}'
+
+```
+
+Postman POST request ```http://localhost:8080/api/v1/users/```
+```
+{
+"email": "anat@admin.ru",
+"lastName": "Anat",
+"password": "123",
+"firstName": "Vas",
+"role": "ROLE_ADMIN"
+}
+```
