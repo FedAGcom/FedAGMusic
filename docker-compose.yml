@@ -7,7 +7,7 @@ services:
     image: fedagmusic:latest
     restart: always
     environment:
-      spring_r2dbc_url: r2dbc:postgresql://postgres-bd:5432/fm-postgres
+      spring_r2dbc_url: r2dbc:postgresql://postgres:5432/postgres
     ports:
       - 8080:8080
     depends_on:
@@ -15,11 +15,11 @@ services:
 
   #  PostgreSQL
   postgres:
-    container_name: postgres-bd
+    container_name: postgres
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_DB: "fm-postgres"
+      POSTGRES_DB: "postgres"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/pgdata"
