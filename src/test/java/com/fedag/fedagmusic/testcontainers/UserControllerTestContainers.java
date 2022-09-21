@@ -20,7 +20,7 @@ import reactor.test.StepVerifier;
 
 import java.time.LocalDateTime;
 
-import static com.fedag.fedagmusic.entities.UserRole.USER;
+import static com.fedag.fedagmusic.entities.UserRole.ROLE_USER;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
@@ -42,7 +42,7 @@ public class UserControllerTestContainers {
         User user = User.builder()
                 .created(LocalDateTime.now()).email("testController@test.ru")
                 .firstName("Alex").lastName("Dear").password("123")
-                .role(USER).build();
+                .role(ROLE_USER).build();
 
         Mono<ResponseEntity<User>> responseEntityMono = userController.addUser(user);
 
