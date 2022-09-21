@@ -2,7 +2,6 @@ package com.fedag.fedagmusic.service.impl;
 
 import com.fedag.fedagmusic.entities.User;
 import com.fedag.fedagmusic.repository.UserRepository;
-import com.fedag.fedagmusic.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
-
 
 import java.time.LocalDateTime;
 
