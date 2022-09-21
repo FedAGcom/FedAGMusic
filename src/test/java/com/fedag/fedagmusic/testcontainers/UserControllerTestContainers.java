@@ -28,7 +28,7 @@ import static com.fedag.fedagmusic.entities.UserRole.ROLE_USER;
 
 @Testcontainers
 public class UserControllerTestContainers {
-/*
+
 
     @Container
     public static PostgreSQLContainer postgreSQLContainer
@@ -40,6 +40,7 @@ public class UserControllerTestContainers {
     @Test
     public void WhenAddUserExpectHttpStatus() {
         System.out.println(postgreSQLContainer.getExposedPorts());
+
         User user = User.builder()
                 .created(LocalDateTime.now()).email("testController@test.ru")
                 .firstName("Alex").lastName("Dear").password("123")
@@ -55,7 +56,6 @@ public class UserControllerTestContainers {
                 .verifyComplete();
 
     }
-*/
 
 }
 

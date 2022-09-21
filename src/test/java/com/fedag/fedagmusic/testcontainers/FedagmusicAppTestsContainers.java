@@ -1,29 +1,24 @@
 
 package com.fedag.fedagmusic.testcontainers;
 
-import com.fedag.fedagmusic.entities.User;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import static com.fedag.fedagmusic.entities.UserRole.ROLE_USER;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FedagmusicAppTestsContainers {
 
     private final static int PORT = 8080;
-
     @Autowired
-    TestRestTemplate restTemplate;
+    private WebTestClient webClient;
 
     @Container
     public static PostgreSQLContainer postgreSQLContainer
@@ -31,40 +26,36 @@ public class FedagmusicAppTestsContainers {
 
     @Container
     public static GenericContainer<?> fedagmusic = new GenericContainer<>("fedagmusic:latest")
-            .withExposedPorts(PORT);
+            .withExposedPorts(PORT).dependsOn(postgreSQLContainer);
 
     @Test
-    void userAddTest() {
-     /*   User user = User.builder()
-                .email("FedagmusicAppTestsContainers@test.ru")
-                .firstName("Alex").lastName("Dear").password("test")
-                .role(USER).build();*/
+    void userCreateTest() {
+        String getURI = fedagmusic.getHost() + ":" + PORT;
+        System.out.println(getURI);
 
-        Assertions.assertTrue(fedagmusic.isRunning());
+        String body = "{\n" +
+                "\"email\": \"FedagmusicAppTestsContainers@test.ru\",\n" +
+                "\"lastName\": \"Dear\",\n" +
+                "\"password\": \"test\",\n" +
+                "\"firstName\": \"Alex\",\n" +
+                "\"role\": \"ROLE_USER\"\n" +
+                "}";
 
-/*
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(
-                "http://localhost:" + fedagmusic.getMappedPort(PORT) + "/api/v1/users/1", String.class);
-        System.out.println(forEntity.getBody());
-    *//*    String expected = "{\"operationId\":" + "\"1\"}";
-        String actual = forEntity.getBody();*//*
-        //  Assertions.assertEquals(expected, actual);
-
-        Assertions.assertEquals(HttpStatus.ACCEPTED, forEntity.getStatusCode());*/
+        webClient.post().uri(getURI + "/api/v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(body))
+                .exchange()
+                .expectStatus().is2xxSuccessful();
     }
 
     @Test
     void swaggerTest() {
+        String getURI = fedagmusic.getHost() + ":" + PORT;
+        System.out.println(getURI);
 
-        ResponseEntity<String> swagger = restTemplate.getForEntity(
-                "http://localhost:" + fedagmusic.getMappedPort(PORT) + "/swagger-ui.html", String.class);
-
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, swagger.getStatusCode());
-
-//        System.out.println(swagger.getBody());
-//        String expected = "{\"operationId\":" + "\"1\"}";
-//        String actual = swagger.getBody();
-//        Assertions.assertEquals(expected, actual);
+        webClient.get()
+                .uri(getURI + "/swagger-ui.html")
+                .exchange()
+                .expectStatus().is4xxClientError();
     }
 }
-
