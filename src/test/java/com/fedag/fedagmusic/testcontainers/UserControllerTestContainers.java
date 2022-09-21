@@ -28,6 +28,7 @@ import static com.fedag.fedagmusic.entities.UserRole.ROLE_USER;
 
 @Testcontainers
 public class UserControllerTestContainers {
+/*
 
     @Container
     public static PostgreSQLContainer postgreSQLContainer
@@ -54,6 +55,7 @@ public class UserControllerTestContainers {
                 .verifyComplete();
 
     }
+*/
 
 }
 
