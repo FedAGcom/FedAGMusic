@@ -14,7 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class FedagmusicAppTestsContainers {
+public class FedagmusicAppContainerTest {
 
     private final static int PORT = 8080;
     @Autowired
@@ -54,8 +54,8 @@ public class FedagmusicAppTestsContainers {
         System.out.println(getURI);
 
         webClient.get()
-                .uri(getURI + "/swagger-ui.html")
+                .uri(getURI + "/webjars/swagger-ui/index.html")
                 .exchange()
-                .expectStatus().is4xxClientError();
+                .expectStatus().is2xxSuccessful();
     }
 }

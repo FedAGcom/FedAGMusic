@@ -1,7 +1,7 @@
 package com.fedag.fedagmusic.testcontainers;
 
 import com.fedag.fedagmusic.FedagmusicApplication;
-import com.fedag.fedagmusic.controller.UserController;
+import com.fedag.fedagmusic.controller.AuthController;
 import com.fedag.fedagmusic.entities.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,10 +24,11 @@ import static com.fedag.fedagmusic.entities.UserRole.ROLE_USER;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = FedagmusicApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = FedagmusicApplication.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
 @Testcontainers
-public class UserControllerTestContainers {
+public class PostgresSQLContainerTest {
 
 
     @Container
@@ -35,7 +36,7 @@ public class UserControllerTestContainers {
             = PostgresTestContainer.getInstance();
 
     @Autowired
-    private UserController userController;
+    private AuthController authController;
 
     @Test
     public void WhenAddUserExpectHttpStatus() {
@@ -46,7 +47,7 @@ public class UserControllerTestContainers {
                 .firstName("Alex").lastName("Dear").password("123")
                 .role(ROLE_USER).build();
 
-        Mono<ResponseEntity<User>> responseEntityMono = userController.addUser(user);
+        Mono<ResponseEntity<User>> responseEntityMono = authController.addUser(user);
 
         StepVerifier
                 .create(responseEntityMono)
