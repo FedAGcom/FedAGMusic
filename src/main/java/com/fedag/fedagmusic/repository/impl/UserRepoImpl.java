@@ -22,7 +22,7 @@ public class UserRepoImpl {
         return databaseClient.sql("select *, p.id as p_id, u.id as u_id " +
                         "from users_performers " +
                         "join performer p on p.id = users_performers.performers_id " +
-                        "join \"user\" u on u.id = users_performers.user_id " +
+                        "join \"users\" u on u.id = users_performers.user_id " +
                         "where u.id = :id")
                 .bind("id", id)
                 .fetch().all()
@@ -48,7 +48,7 @@ public class UserRepoImpl {
         return databaseClient.sql("select *, p.id as p_id, u.id as u_id " +
                         "from users_performers " +
                         "join performer p on p.id = users_performers.performers_id " +
-                        "join \"user\" u on u.id = users_performers.user_id " +
+                        "join \"users\" u on u.id = users_performers.user_id " +
                         "where u.id = :user_id and p.id = :performer_id")
                 .bind("user_id", user_id)
                 .bind("performer_id", performer_id)

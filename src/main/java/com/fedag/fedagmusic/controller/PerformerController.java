@@ -90,8 +90,8 @@ public class PerformerController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping
-    public Mono<ResponseEntity<Void>> subscribeToPerformer(@RequestParam String name) {
+    @PostMapping("subscribe/{name}")
+    public Mono<ResponseEntity<Void>> subscribeToPerformer(@PathVariable String name) {
         return performerService.subscribeToPerformer(name)
                 .map(ResponseEntity.ok()::body);
     }

@@ -4,6 +4,7 @@ import com.fedag.fedagmusic.entities.Performer;
 import com.fedag.fedagmusic.entities.User;
 import com.fedag.fedagmusic.repository.PerformerRepository;
 import com.fedag.fedagmusic.repository.impl.UserRepoImpl;
+import com.fedag.fedagmusic.security.JwtUtil;
 import com.fedag.fedagmusic.service.PerformerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class PerformerServiceImpl implements PerformerService {
 
     private final PerformerRepository performerRepository;
     private final UserRepoImpl userRepo;
+    private final JwtUtil jwtUtil;
 
     @Override
     public Mono<Performer> createPerformer(Performer performer) {
@@ -44,9 +46,10 @@ public class PerformerServiceImpl implements PerformerService {
 
     @Override
     public Mono<Void> subscribeToPerformer(String name) {
+        User authUser = jwtUtil.getAuthUser();
         Performer byName = performerRepository.findByName(name).share().block();
         User select = userRepo.selectUserSubscribedToPerformer(
-                3L, Objects.requireNonNull(byName)
+                authUser.getId(), Objects.requireNonNull(byName)
                         .getId()).share().block();
 
         if (select == null) {
@@ -55,7 +58,7 @@ public class PerformerServiceImpl implements PerformerService {
                     .flatMap(performerRepository::save)
                     .share().block();
             return userRepo.subscribeToPerformer(
-                    3L, Objects.requireNonNull(byName).getId());
+                    authUser.getId(), Objects.requireNonNull(byName).getId());
         }
         return Mono.empty();
     }

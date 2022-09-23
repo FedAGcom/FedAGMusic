@@ -19,7 +19,7 @@ public class PlaylistRepoImpl {
             "us.password as us_password, us.\"firstName\" as us_firstName, " +
             "us.\"lastName\" as us_lastName, us.created as us_created " +
             "from playlist play " +
-            "join \"user\" us on us.id = play.user_id";
+            "join \"users\" us on us.id = play.user_id";
 
     public Mono<Playlist> findPlaylistById(Long id) {
         return databaseClient.sql(SELECT_PLAYLIST + " where play.id = :id")

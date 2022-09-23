@@ -24,7 +24,6 @@ import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
 @RequiredArgsConstructor
 @Tag(name = "User", description = "Работа с пользователем")
 public class UserController {
-    private final UserRepoImpl userRepo;
     private final UserService userService;
 
     @Operation(summary = "Получение пользователя по ID")
@@ -92,7 +91,7 @@ public class UserController {
 
     @GetMapping("/withPerformer/{id}")
     public Flux<User> findUserByIdWithPerformer(@PathVariable Long id) {
-        return userRepo.findUserByIdWithPerformer(id);
+        return userService.findUserByIdWithPerformer(id);
     }
 
 }

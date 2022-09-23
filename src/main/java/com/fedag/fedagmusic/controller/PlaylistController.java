@@ -25,7 +25,6 @@ import java.util.Comparator;
 @Tag(name = "Playlist", description = "Работа с плейлистом")
 public class PlaylistController {
     private final PlaylistServiceImpl playlistServiceImpl;
-    private final PlaylistRepoImpl playlistRepo;
 
     @Operation(summary = "Получение плейлиста по ID")
     @ApiResponse(responseCode = "200", description = "Плейлист найден",
@@ -36,7 +35,7 @@ public class PlaylistController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
     public Mono<ResponseEntity<Playlist>> getPlaylistById(@PathVariable Long id) {
-        return playlistRepo.findPlaylistById(id)
+        return playlistServiceImpl.findPlaylistById(id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
@@ -96,7 +95,7 @@ public class PlaylistController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(LIST_URL + PAGE_URL + PAGE_SIZE_URL)
     public Flux<Playlist> findAll(@PathVariable Long page, @PathVariable Long pageSize) {
-        return playlistRepo.findAllPlaylist()
+        return playlistServiceImpl.findAllPlaylist()
                 .sort(Comparator.comparing(Playlist::getCreated).reversed())
                 .skip(page * pageSize)
                 .take(pageSize);

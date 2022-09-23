@@ -48,7 +48,7 @@ public class WebSecurityConfig {
                 .authenticationManager(authenticationManager)
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
-                .pathMatchers("/", "/login", "/favicon.ico").permitAll()
+                .pathMatchers("/**", "/login", "/favicon.ico").permitAll()
                 //TODO role
                 //.pathMatchers("/users/**").hasRole("ADMIN")
                 .pathMatchers("/api/v1/users").permitAll()

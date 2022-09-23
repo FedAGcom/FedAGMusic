@@ -25,7 +25,6 @@ import java.util.Comparator;
 @Tag(name = "Song", description = "Работа с песней")
 public class SongController {
     private final SongServiceImpl songServiceImpl;
-    private final SongRepoImpl songRepo;
 
     @Operation(summary = "Получение песни по ID")
     @ApiResponse(responseCode = "200", description = "Песня найдена",
@@ -36,7 +35,7 @@ public class SongController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
     public Mono<ResponseEntity<Song>> getSongById(@PathVariable Long id) {
-        return songRepo.findSongById(id)
+        return songServiceImpl.findSongById(id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
@@ -93,7 +92,7 @@ public class SongController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(LIST_URL + PAGE_URL + PAGE_SIZE_URL)
     public Flux<Song> findAllSong(@PathVariable Long page, @PathVariable Long pageSize) {
-        return songRepo.findAllSong()
+        return songServiceImpl.findAllSong()
                 .sort(Comparator.comparing(Song::getCreated).reversed())
                 .skip(page * pageSize)
                 .take(pageSize);
