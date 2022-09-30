@@ -5,11 +5,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
 
 @Data
@@ -34,7 +37,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column
-    private UserRole role;
+    private String role;
 
     @Column
     private LocalDateTime created;
@@ -42,18 +45,21 @@ public class User implements UserDetails {
     @Transient
     private List<Performer> performer;
 
-    public User(Long id, String email, String password, String firstName, String lastName, LocalDateTime created) {
+    public User(Long id, String email, String password, String firstName, String lastName, String role, LocalDateTime created) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = role;
         this.created = created;
     }
 
+    private Collection<? extends GrantedAuthority> grantedAuthorities;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return grantedAuthorities;
     }
 
     @Override

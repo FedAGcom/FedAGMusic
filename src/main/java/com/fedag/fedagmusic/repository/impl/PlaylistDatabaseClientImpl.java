@@ -2,6 +2,7 @@ package com.fedag.fedagmusic.repository.impl;
 
 import com.fedag.fedagmusic.entities.Playlist;
 import com.fedag.fedagmusic.entities.User;
+import com.fedag.fedagmusic.repository.databaseClient.PlaylistDatabaseClient;
 import io.r2dbc.spi.Row;
 import lombok.RequiredArgsConstructor;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -13,23 +14,26 @@ import java.time.LocalDateTime;
 
 @Repository
 @RequiredArgsConstructor
-public class PlaylistRepoImpl {
+public class PlaylistDatabaseClientImpl implements PlaylistDatabaseClient {
     private final DatabaseClient databaseClient;
     private static final String SELECT_PLAYLIST = "select play.*, us.email as us_email, " +
-            "us.password as us_password, us.\"firstName\" as us_firstName, " +
-            "us.\"lastName\" as us_lastName, us.created as us_created " +
+            "us.password as us_password, us.first_name as us_firstName, " +
+            "us.last_name as us_lastName, us.created as us_created, " +
+            "us.role as us_role " +
             "from playlist play " +
-            "join \"users\" us on us.id = play.user_id";
+            "left join users us on us.id = play.user_id";
 
+    @Override
     public Mono<Playlist> findPlaylistById(Long id) {
         return databaseClient.sql(SELECT_PLAYLIST + " where play.id = :id")
                 .bind("id", id)
-                .map(PlaylistRepoImpl::convertRow).one();
+                .map(PlaylistDatabaseClientImpl::convertRow).one();
     }
 
+    @Override
     public Flux<Playlist> findAllPlaylist() {
         return databaseClient.sql(SELECT_PLAYLIST)
-                .map(PlaylistRepoImpl::convertRow).all();
+                .map(PlaylistDatabaseClientImpl::convertRow).all();
     }
 
     public static Playlist convertRow(Row row) {
@@ -43,6 +47,7 @@ public class PlaylistRepoImpl {
                         row.get("us_password", String.class),
                         row.get("us_firstName", String.class),
                         row.get("us_lastName", String.class),
+                        row.get("us_role", String.class),
                         row.get("us_created", LocalDateTime.class)))
                 .build();
     }

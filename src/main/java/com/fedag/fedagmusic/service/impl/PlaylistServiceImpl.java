@@ -2,7 +2,7 @@ package com.fedag.fedagmusic.service.impl;
 
 import com.fedag.fedagmusic.entities.Playlist;
 import com.fedag.fedagmusic.repository.PlaylistRepository;
-import com.fedag.fedagmusic.repository.impl.PlaylistRepoImpl;
+import com.fedag.fedagmusic.repository.databaseClient.PlaylistDatabaseClient;
 import com.fedag.fedagmusic.service.PlaylistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PlaylistServiceImpl implements PlaylistService {
     private final PlaylistRepository playlistRepository;
-    private final PlaylistRepoImpl playlistRepo;
 
     @Override
     @Transactional
@@ -43,18 +42,5 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Transactional
     public Mono<Void> deletePlaylistById(Long playlistId) {
         return playlistRepository.deleteById(playlistId);
-    }
-
-    @Override
-    public Flux<Playlist> findAll() {
-        return playlistRepository.findAll();
-    }
-
-    public Flux<Playlist> findAllPlaylist() {
-        return playlistRepo.findAllPlaylist();
-    }
-
-    public Mono<Playlist> findPlaylistById(Long id) {
-        return playlistRepo.findPlaylistById(id);
     }
 }

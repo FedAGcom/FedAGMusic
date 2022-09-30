@@ -3,7 +3,7 @@ package com.fedag.fedagmusic.service.impl;
 import com.fedag.fedagmusic.entities.Performer;
 import com.fedag.fedagmusic.entities.User;
 import com.fedag.fedagmusic.repository.PerformerRepository;
-import com.fedag.fedagmusic.repository.impl.UserRepoImpl;
+import com.fedag.fedagmusic.repository.databaseClient.UserDatabaseClient;
 import com.fedag.fedagmusic.security.JwtUtil;
 import com.fedag.fedagmusic.service.PerformerService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.Objects;
 public class PerformerServiceImpl implements PerformerService {
 
     private final PerformerRepository performerRepository;
-    private final UserRepoImpl userRepo;
+    private final UserDatabaseClient userDatabaseClient;
     private final JwtUtil jwtUtil;
 
     @Override
@@ -48,7 +48,7 @@ public class PerformerServiceImpl implements PerformerService {
     public Mono<Void> subscribeToPerformer(String name) {
         User authUser = jwtUtil.getAuthUser();
         Performer byName = performerRepository.findByName(name).share().block();
-        User select = userRepo.selectUserSubscribedToPerformer(
+        User select = userDatabaseClient.selectUserSubscribedToPerformer(
                 authUser.getId(), Objects.requireNonNull(byName)
                         .getId()).share().block();
 
@@ -57,7 +57,7 @@ public class PerformerServiceImpl implements PerformerService {
                     .doOnNext(s -> s.setSubscribersCount(s.getSubscribersCount() + 1))
                     .flatMap(performerRepository::save)
                     .share().block();
-            return userRepo.subscribeToPerformer(
+            return userDatabaseClient.subscribeToPerformer(
                     authUser.getId(), Objects.requireNonNull(byName).getId());
         }
         return Mono.empty();

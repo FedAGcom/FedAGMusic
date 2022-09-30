@@ -3,6 +3,7 @@ package com.fedag.fedagmusic.repository.impl;
 import com.fedag.fedagmusic.entities.Album;
 import com.fedag.fedagmusic.entities.Performer;
 import com.fedag.fedagmusic.entities.Song;
+import com.fedag.fedagmusic.repository.databaseClient.SongDatabaseClient;
 import io.r2dbc.spi.Row;
 import lombok.RequiredArgsConstructor;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -14,22 +15,24 @@ import java.time.LocalDateTime;
 
 @Repository
 @RequiredArgsConstructor
-public class SongRepoImpl {
+public class SongDatabaseClientImpl implements SongDatabaseClient {
     private final DatabaseClient databaseClient;
     private static final String SELECT_SONG = "select son.*, per.name as p_name, per.description " +
             "as p_des, alb.title as a_title, alb.created as a_created from song son " +
             "left join performer per on per.id = son.performer_id " +
             "left join album alb on alb.id = son.album_id";
 
+    @Override
     public Mono<Song> findSongById(Long id) {
         return databaseClient.sql(SELECT_SONG + " where son.id = :id")
                 .bind("id", id)
-                .map(SongRepoImpl::convertRow).one();
+                .map(SongDatabaseClientImpl::convertRow).one();
     }
 
+    @Override
     public Flux<Song> findAllSong() {
         return databaseClient.sql(SELECT_SONG)
-                .map(SongRepoImpl::convertRow).all();
+                .map(SongDatabaseClientImpl::convertRow).all();
     }
 
     public static Song convertRow(Row row) {

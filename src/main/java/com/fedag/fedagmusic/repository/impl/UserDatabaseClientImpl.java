@@ -2,6 +2,7 @@ package com.fedag.fedagmusic.repository.impl;
 
 import com.fedag.fedagmusic.entities.Performer;
 import com.fedag.fedagmusic.entities.User;
+import com.fedag.fedagmusic.repository.databaseClient.UserDatabaseClient;
 import io.r2dbc.spi.Row;
 import lombok.RequiredArgsConstructor;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -15,9 +16,10 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepoImpl {
+public class UserDatabaseClientImpl implements UserDatabaseClient {
     private final DatabaseClient databaseClient;
 
+    @Override
     public Flux<User> findUserByIdWithPerformer(Long id) {
         return databaseClient.sql("select *, p.id as p_id, u.id as u_id " +
                         "from users_performers " +
@@ -44,6 +46,7 @@ public class UserRepoImpl {
                                 .collect(Collectors.toList())).build());
     }
 
+    @Override
     public Mono<User> selectUserSubscribedToPerformer(Long user_id, Long performer_id) {
         return databaseClient.sql("select *, p.id as p_id, u.id as u_id " +
                         "from users_performers " +
@@ -52,7 +55,7 @@ public class UserRepoImpl {
                         "where u.id = :user_id and p.id = :performer_id")
                 .bind("user_id", user_id)
                 .bind("performer_id", performer_id)
-                .map(UserRepoImpl::convertRow).one();
+                .map(UserDatabaseClientImpl::convertRow).one();
     }
 
     public static User convertRow(Row row) {
@@ -64,6 +67,7 @@ public class UserRepoImpl {
                 .build();
     }
 
+    @Override
     public Mono<Void> subscribeToPerformer(Long user_id, Long performer_id) {
         return databaseClient.sql("insert into users_performers VALUES (:user_id, :performer_id)")
                 .bind("user_id", user_id)

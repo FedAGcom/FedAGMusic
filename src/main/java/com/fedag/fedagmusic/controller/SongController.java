@@ -1,8 +1,8 @@
 package com.fedag.fedagmusic.controller;
 
 import com.fedag.fedagmusic.entities.Song;
-import com.fedag.fedagmusic.repository.impl.SongRepoImpl;
-import com.fedag.fedagmusic.service.impl.SongServiceImpl;
+import com.fedag.fedagmusic.repository.databaseClient.SongDatabaseClient;
+import com.fedag.fedagmusic.service.SongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,14 +17,13 @@ import reactor.core.publisher.Mono;
 
 import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
 
-import java.util.Comparator;
-
 @RestController
 @RequestMapping(API + VERSION + SONG_URL)
 @RequiredArgsConstructor
 @Tag(name = "Song", description = "Работа с песней")
 public class SongController {
-    private final SongServiceImpl songServiceImpl;
+    private final SongService songService;
+    private final SongDatabaseClient songDatabaseClient;
 
     @Operation(summary = "Получение песни по ID")
     @ApiResponse(responseCode = "200", description = "Песня найдена",
@@ -35,7 +34,7 @@ public class SongController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
     public Mono<ResponseEntity<Song>> getSongById(@PathVariable Long id) {
-        return songServiceImpl.findSongById(id)
+        return songDatabaseClient.findSongById(id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
@@ -49,7 +48,7 @@ public class SongController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping
     public Mono<ResponseEntity<Song>> createSong(@RequestBody Song song) {
-        return songServiceImpl.createSong(song)
+        return songService.createSong(song)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
@@ -63,7 +62,7 @@ public class SongController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PutMapping(ID)
     public Mono<ResponseEntity<Song>> updateSong(@RequestBody Song song, @PathVariable Long id) {
-        return songServiceImpl.updateSong(song, id)
+        return songService.updateSong(song, id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
@@ -77,8 +76,8 @@ public class SongController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(ID)
     public Mono<ResponseEntity<Void>> deleteSongById(@PathVariable Long id) {
-        return songServiceImpl.getSongById(id)
-                .flatMap(s -> songServiceImpl.deleteSongById(s.getId())
+        return songService.getSongById(id)
+                .flatMap(s -> songService.deleteSongById(s.getId())
                         .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK))))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -92,8 +91,7 @@ public class SongController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(LIST_URL + PAGE_URL + PAGE_SIZE_URL)
     public Flux<Song> findAllSong(@PathVariable Long page, @PathVariable Long pageSize) {
-        return songServiceImpl.findAllSong()
-                .sort(Comparator.comparing(Song::getCreated).reversed())
+        return songDatabaseClient.findAllSong()
                 .skip(page * pageSize)
                 .take(pageSize);
     }

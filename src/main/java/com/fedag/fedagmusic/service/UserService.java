@@ -11,5 +11,4 @@ public interface UserService {
     Mono <Void> deleteUserById(Long id);
     Mono<User> updateUser(User user, Long id);
     Mono<UserDetails> findByUsername(String email);
-    Flux<User> findUserByIdWithPerformer(Long id);
 }

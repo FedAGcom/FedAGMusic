@@ -2,7 +2,7 @@ package com.fedag.fedagmusic.controller;
 
 
 import com.fedag.fedagmusic.entities.User;
-import com.fedag.fedagmusic.repository.impl.UserRepoImpl;
+import com.fedag.fedagmusic.repository.databaseClient.UserDatabaseClient;
 import com.fedag.fedagmusic.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,6 +25,7 @@ import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
 @Tag(name = "User", description = "Работа с пользователем")
 public class UserController {
     private final UserService userService;
+    private final UserDatabaseClient userDatabaseClient;
 
     @Operation(summary = "Получение пользователя по ID")
     @ApiResponse(responseCode = "200", description = "Пользователь найден",
@@ -91,7 +92,7 @@ public class UserController {
 
     @GetMapping("/withPerformer/{id}")
     public Flux<User> findUserByIdWithPerformer(@PathVariable Long id) {
-        return userService.findUserByIdWithPerformer(id);
+        return userDatabaseClient.findUserByIdWithPerformer(id);
     }
 
 }

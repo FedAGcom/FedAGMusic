@@ -2,13 +2,12 @@ package com.fedag.fedagmusic.service.impl;
 
 import com.fedag.fedagmusic.entities.User;
 import com.fedag.fedagmusic.repository.UserRepository;
-import com.fedag.fedagmusic.repository.impl.UserRepoImpl;
+import com.fedag.fedagmusic.repository.databaseClient.UserDatabaseClient;
 import com.fedag.fedagmusic.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +26,6 @@ public class UserServiceImpl implements UserService, ReactiveUserDetailsService 
     Logger logger = LoggerFactory.getLogger("Logger");
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepoImpl userRepo;
 
     @Override
     public Mono<User> getUserById(Long id) {
@@ -69,9 +67,5 @@ public class UserServiceImpl implements UserService, ReactiveUserDetailsService 
     public Mono<UserDetails> findByUsername(String username) {
         return userRepository.findByEmail(username)
                 .cast(UserDetails.class);
-    }
-
-    public Flux<User> findUserByIdWithPerformer(Long id) {
-        return userRepo.findUserByIdWithPerformer(id);
     }
 }
