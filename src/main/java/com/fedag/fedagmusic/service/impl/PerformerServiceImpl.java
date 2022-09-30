@@ -22,7 +22,9 @@ public class PerformerServiceImpl implements PerformerService {
 
     @Override
     public Mono<Performer> createPerformer(Performer performer) {
-        return performerRepository.save(performer);
+        return performerRepository.findByName(performer.getName())
+                .switchIfEmpty(Mono.defer(() -> performerRepository.save(performer)
+                        .then(Mono.empty())));
     }
 
     @Override
