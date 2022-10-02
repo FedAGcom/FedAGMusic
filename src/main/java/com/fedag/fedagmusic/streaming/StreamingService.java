@@ -1,5 +1,8 @@
 package com.fedag.fedagmusic.streaming;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.*;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -15,7 +18,9 @@ import java.nio.file.Path;
 import static java.nio.file.StandardOpenOption.CREATE;
 
 @Service
+@Slf4j
 public class StreamingService {
+    Logger logger = LoggerFactory.getLogger("Logger");
     private static final String FORMAT="classpath:music/%s.mp3";
     String uri = "https://dl3ca1.muzofond.fm/aHR0cDovL2YubXAzcG9pc2submV0L21wMy8wMDQvNzUxLzI3My80NzUxMjczLm1wMw==";
     String uri2 = "https://cdn.drivemusic.me/dl/online/p-IFvMrzd0uI9aIjzJckdA/1663263276/download_music/2013/12/madcon-beggin.mp3";
@@ -29,16 +34,19 @@ public class StreamingService {
 
 
     public Mono<Resource> getAudio(String title){
+        logger.info("Выполняется метод getAudio");
         return Mono.fromSupplier(()->resourceLoader.
                  getResource(String.format(FORMAT, title)));
     }
 
     public Mono<Resource> getWebAudio() {
+        logger.info("Выполняется метод getWebAudio");
          return webClient.get().uri(uri2).retrieve().bodyToMono(Resource.class);
     }
 
 
     public Mono<Void> downloadAudio() {
+        logger.info("Выполняется метод downloadAudio");
         Mono<DataBuffer> dataBufferMono = webClient.get().uri(uri).retrieve().bodyToMono(DataBuffer.class);
         Path musicFile = FileSystems.getDefault().getPath("C:/SoS/music.mp3");
         return DataBufferUtils.write(dataBufferMono, musicFile, CREATE);
