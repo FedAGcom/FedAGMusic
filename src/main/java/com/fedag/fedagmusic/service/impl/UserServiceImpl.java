@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+
 
 
 @Service
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService, ReactiveUserDetailsService 
     @Override
     public Mono<User> getUserById(Long id) {
         logger.info("Выполняется метод getUserById");
-        return userRepository.findById(id);
+        return userRepository.findById(id).log("getUserById");
     }
 
     @Override
@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService, ReactiveUserDetailsService 
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
+        logger.info("Выполняется метод findByUsername");
         return userRepository.findByEmail(username)
                 .cast(UserDetails.class);
     }
