@@ -7,6 +7,7 @@ import com.fedag.fedagmusic.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
 @RestController
 @RequestMapping(API + VERSION + USER_URL)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-token-auth")
 @Tag(name = "User", description = "Работа с пользователем")
 public class UserController {
     private final UserService userService;
@@ -42,20 +44,6 @@ public class UserController {
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @Operation(summary = "Создание пользователя")
-    @ApiResponse(responseCode = "200", description = "Пользователь создан",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "400", description = "Ошибка клиента",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @ApiResponse(responseCode = "500", description = "Ошибка сервера",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
-    @PostMapping
-    //@PreAuthorize("hasRole('ADMIN')")
-    public Mono<ResponseEntity<User>> addUser(@RequestBody User user) {
-        return userService.addUser(user)
-                .map(ResponseEntity.accepted()::body)
-                .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
-    }
 
     @Operation(summary = "Обновление пользователя по ID")
     @ApiResponse(responseCode = "200", description = "Пользователь обновлён",

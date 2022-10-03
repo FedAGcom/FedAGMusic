@@ -16,6 +16,21 @@ public class WebSecurityConfig {
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+            // other public endpoints of your API may be appended to this array
+    };
+
     public WebSecurityConfig(AuthenticationManager authenticationManager, SecurityContextRepository securityContextRepository) {
         this.authenticationManager = authenticationManager;
         this.securityContextRepository = securityContextRepository;
@@ -48,10 +63,9 @@ public class WebSecurityConfig {
                 .authenticationManager(authenticationManager)
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
-                .pathMatchers("/**", "/login", "/favicon.ico").permitAll()
-                //TODO role
-                //.pathMatchers("/users/**").hasRole("ADMIN")
-                .pathMatchers("/api/v1/users").permitAll()
+                .pathMatchers("/", "/favicon.ico").permitAll()
+                .pathMatchers("/api/v1/users", "/api/v1/login").permitAll()
+                .pathMatchers(AUTH_WHITELIST).permitAll() // whitelist URL permitted for swagger
                 .anyExchange()
                 .authenticated()
                 .and()
