@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-song
+      author: Anatolii Vasilev
+      changes:
+        - createTable:
+            tableName: song
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: timestamp without time zone
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: performer_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: performer_song_fk
+                    referencedTableName: performer
+                    referencedColumnNames: id
+              - column:
+                  name: album_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: album_song_fk
+                    referencedTableName: album
+                    referencedColumnNames: id
+              - column:
+                  name: playlist_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: playlist_song_fk
+                    referencedTableName: playlist
+                    referencedColumnNames: id

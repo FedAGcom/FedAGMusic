@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-album
+      author: Anatolii Vasilev
+      changes:
+        - createTable:
+            tableName: album
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: timestamp without time zone
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: performer_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: performer_album_fk
+                    referencedTableName: performer
+                    referencedColumnNames: id
