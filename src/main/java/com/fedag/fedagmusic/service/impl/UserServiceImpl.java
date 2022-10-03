@@ -5,8 +5,6 @@ import com.fedag.fedagmusic.repository.UserRepository;
 import com.fedag.fedagmusic.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,35 +20,34 @@ import java.time.LocalDateTime;
 @Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, ReactiveUserDetailsService {
-    Logger logger = LoggerFactory.getLogger("Logger");
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public Mono<User> getUserById(Long id) {
-        logger.info("Выполняется метод getUserById");
+        log.info("Выполняется метод getUserById");
         return userRepository.findById(id).log("getUserById");
     }
 
     @Override
     public Mono<User> addUser(User user) {
-        logger.info("Выполняется метод addUser");
+        log.info("Выполняется метод addUser");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreated(LocalDateTime.now());
-        return userRepository.save(user);
+        return userRepository.save(user).log("addUser");
     }
 
     @Transactional
     @Override
     public Mono<Void> deleteUserById(Long id) {
-        logger.info("Выполняется метод deleteUserById");
-        return userRepository.deleteById(id);
+        log.info("Выполняется метод deleteUserById");
+        return userRepository.deleteById(id).log("deleteUserById");
 
     }
 
     @Override
     public Mono<User> updateUser(User user, Long id) {
-        logger.info("Выполняется метод updateUser");
+        log.info("Выполняется метод updateUser");
         return userRepository.findById(id).
                 map((c) -> {
                     c.setEmail(user.getEmail());
@@ -59,14 +56,14 @@ public class UserServiceImpl implements UserService, ReactiveUserDetailsService 
                     c.setPassword(passwordEncoder.encode(user.getPassword()));
                     c.setRole(user.getRole());
                     return c;
-                }).flatMap(userRepository::save);
+                }).flatMap(userRepository::save).log("updateUser");
     }
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-        logger.info("Выполняется метод findByUsername");
+        log.info("Выполняется метод findByUsername");
         return userRepository.findByEmail(username)
-                .cast(UserDetails.class);
+                .cast(UserDetails.class).log("findByUsername");
     }
 
 }

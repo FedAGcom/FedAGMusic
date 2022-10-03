@@ -5,8 +5,6 @@ import com.fedag.fedagmusic.repository.PlaylistRepository;
 import com.fedag.fedagmusic.service.PlaylistService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -18,43 +16,42 @@ import java.time.LocalDateTime;
 @Slf4j
 @RequiredArgsConstructor
 public class PlaylistServiceImpl implements PlaylistService {
-    Logger logger = LoggerFactory.getLogger("Logger");
     private final PlaylistRepository playlistRepository;
 
     @Override
     @Transactional
     public Mono<Playlist> createPlaylist(Playlist playlist) {
-        logger.info("Выполняется метод createPlaylist");
+        log.info("Выполняется метод createPlaylist");
         playlist.setCreated(LocalDateTime.now());
-        return playlistRepository.save(playlist);
+        return playlistRepository.save(playlist).log("createPlaylist");
     }
 
     @Override
     @Transactional
     public Mono<Playlist> getPlaylistById(Long playlistId) {
-        logger.info("Выполняется метод getPlaylistById");
-        return playlistRepository.findById(playlistId);
+        log.info("Выполняется метод getPlaylistById");
+        return playlistRepository.findById(playlistId).log("getPlaylistById");
     }
 
     @Override
     @Transactional
     public Mono<Playlist> updatePlaylist(Playlist playlist, Long id) {
-        logger.info("Выполняется метод updatePlaylist");
+        log.info("Выполняется метод updatePlaylist");
         return playlistRepository.findById(id)
                 .doOnNext(s -> s.setTitle(playlist.getTitle()))
-                .flatMap(playlistRepository::save);
+                .flatMap(playlistRepository::save).log("updatePlaylist");
     }
 
     @Override
     @Transactional
     public Mono<Void> deletePlaylistById(Long playlistId) {
-        logger.info("Выполняется метод deletePlaylistById");
-        return playlistRepository.deleteById(playlistId);
+        log.info("Выполняется метод deletePlaylistById");
+        return playlistRepository.deleteById(playlistId).log("deletePlaylistById");
     }
 
     @Override
     public Flux<Playlist> findAll() {
-        logger.info("Выполняется метод findAll");
-        return playlistRepository.findAll();
+        log.info("Выполняется метод findAll");
+        return playlistRepository.findAll().log("findAll");
     }
 }
