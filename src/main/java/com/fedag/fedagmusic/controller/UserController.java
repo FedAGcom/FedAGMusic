@@ -2,6 +2,7 @@ package com.fedag.fedagmusic.controller;
 
 
 import com.fedag.fedagmusic.entities.User;
+import com.fedag.fedagmusic.repository.databaseClient.UserDatabaseClient;
 import com.fedag.fedagmusic.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
@@ -24,8 +26,8 @@ import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
 @SecurityRequirement(name = "bearer-token-auth")
 @Tag(name = "User", description = "Работа с пользователем")
 public class UserController {
-
     private final UserService userService;
+    private final UserDatabaseClient userDatabaseClient;
 
     @Operation(summary = "Получение пользователя по ID")
     @ApiResponse(responseCode = "200", description = "Пользователь найден",
@@ -74,8 +76,11 @@ public class UserController {
                                 .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                 )
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
-
+    @GetMapping("/withPerformer/{id}")
+    public Flux<User> findUserByIdWithPerformer(@PathVariable Long id) {
+        return userDatabaseClient.findUserByIdWithPerformer(id);
     }
 
 }

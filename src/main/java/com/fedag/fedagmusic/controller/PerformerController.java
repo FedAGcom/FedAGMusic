@@ -33,11 +33,11 @@ public class PerformerController {
     @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping()
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<Performer>> createPerformer(@RequestBody Performer performer) {
         return performerService.createPerformer(performer)
-                .map(ResponseEntity.ok()::body)
-                .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
+                .map(ResponseEntity.status(HttpStatus.NO_CONTENT)::body)
+                .switchIfEmpty(Mono.just(ResponseEntity.ok().build()));
     }
 
 
@@ -90,4 +90,9 @@ public class PerformerController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PostMapping("subscribe/{name}")
+    public Mono<ResponseEntity<Void>> subscribeToPerformer(@PathVariable String name) {
+        return performerService.subscribeToPerformer(name)
+                .map(ResponseEntity.ok()::body);
+    }
 }

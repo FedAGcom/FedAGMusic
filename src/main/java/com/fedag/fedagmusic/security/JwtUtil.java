@@ -21,6 +21,11 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private String expirationTime;
     private SecretKey key;
+    private User authUser;
+
+    public User getAuthUser() {
+        return authUser;
+    }
 
     @PostConstruct
     public void init() {
@@ -48,6 +53,7 @@ public class JwtUtil {
     }
 
     public String generateToken(User user) {
+        authUser = user;
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("role", List.of(user.getRole()));
 

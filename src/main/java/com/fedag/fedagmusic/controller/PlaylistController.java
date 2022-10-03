@@ -1,7 +1,8 @@
 package com.fedag.fedagmusic.controller;
 
 import com.fedag.fedagmusic.entities.Playlist;
-import com.fedag.fedagmusic.service.impl.PlaylistServiceImpl;
+import com.fedag.fedagmusic.repository.databaseClient.PlaylistDatabaseClient;
+import com.fedag.fedagmusic.service.PlaylistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,14 +17,13 @@ import reactor.core.publisher.Mono;
 
 import static com.fedag.fedagmusic.domain.util.UrlConstants.*;
 
-import java.util.Comparator;
-
 @RestController
 @RequestMapping(API + VERSION + PLAYLIST_URL)
 @RequiredArgsConstructor
 @Tag(name = "Playlist", description = "Работа с плейлистом")
 public class PlaylistController {
-    private final PlaylistServiceImpl playlistServiceImpl;
+    private final PlaylistService playlistService;
+    private final PlaylistDatabaseClient playlistDatabaseClient;
 
     @Operation(summary = "Получение плейлиста по ID")
     @ApiResponse(responseCode = "200", description = "Плейлист найден",
@@ -34,7 +34,7 @@ public class PlaylistController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(ID)
     public Mono<ResponseEntity<Playlist>> getPlaylistById(@PathVariable Long id) {
-        return playlistServiceImpl.getPlaylistById(id)
+        return playlistDatabaseClient.findPlaylistById(id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
@@ -48,7 +48,7 @@ public class PlaylistController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping
     public Mono<ResponseEntity<Playlist>> createPlaylist(@RequestBody Playlist playlist) {
-        return playlistServiceImpl.createPlaylist(playlist)
+        return playlistService.createPlaylist(playlist)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
@@ -63,7 +63,7 @@ public class PlaylistController {
     @PutMapping(ID)
     public Mono<ResponseEntity<Playlist>> updatePlaylist(@RequestBody Playlist playlist,
                                                          @PathVariable Long id) {
-        return playlistServiceImpl.updatePlaylist(playlist, id)
+        return playlistService.updatePlaylist(playlist, id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
@@ -79,8 +79,8 @@ public class PlaylistController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(ID)
     public Mono<ResponseEntity<Void>> deletePlaylist(@PathVariable Long id) {
-        return playlistServiceImpl.getPlaylistById(id)
-                .flatMap(s -> playlistServiceImpl.deletePlaylistById(s.getId())
+        return playlistService.getPlaylistById(id)
+                .flatMap(s -> playlistService.deletePlaylistById(s.getId())
                         .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK))))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -94,8 +94,7 @@ public class PlaylistController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(LIST_URL + PAGE_URL + PAGE_SIZE_URL)
     public Flux<Playlist> findAll(@PathVariable Long page, @PathVariable Long pageSize) {
-        return playlistServiceImpl.findAll()
-                .sort(Comparator.comparing(Playlist::getCreated).reversed())
+        return playlistDatabaseClient.findAllPlaylist()
                 .skip(page * pageSize)
                 .take(pageSize);
     }

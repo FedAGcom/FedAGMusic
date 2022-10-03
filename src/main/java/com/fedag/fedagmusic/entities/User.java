@@ -2,15 +2,18 @@ package com.fedag.fedagmusic.entities;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
+import java.util.Collection;
 
 @Data
 @Table(name = "users")
@@ -19,7 +22,6 @@ import java.util.List;
 @Builder
 public class User implements UserDetails {
     @Id
- //   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -35,16 +37,29 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column
-            //   @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private String role;
 
     @Column
     private LocalDateTime created;
 
+    @Transient
+    private List<Performer> performer;
+
+    public User(Long id, String email, String password, String firstName, String lastName, String role, LocalDateTime created) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.created = created;
+    }
+
+    private Collection<? extends GrantedAuthority> grantedAuthorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return grantedAuthorities;
     }
 
     @Override
@@ -73,6 +88,10 @@ public class User implements UserDetails {
         return true;
     }
 
+    public User(Long id, String email) {
+        this.id = id;
+        this.email = email;
+    }
     //    @ManyToMany
 //    @JoinColumn
 //    private Playlist playlistIds;

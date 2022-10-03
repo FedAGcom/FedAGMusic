@@ -2,17 +2,18 @@ package com.fedag.fedagmusic.service.impl;
 
 import com.fedag.fedagmusic.entities.User;
 import com.fedag.fedagmusic.repository.UserRepository;
+import com.fedag.fedagmusic.repository.databaseClient.UserDatabaseClient;
 import com.fedag.fedagmusic.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -67,5 +68,4 @@ public class UserServiceImpl implements UserService, ReactiveUserDetailsService 
         return userRepository.findByEmail(username)
                 .cast(UserDetails.class);
     }
-
 }

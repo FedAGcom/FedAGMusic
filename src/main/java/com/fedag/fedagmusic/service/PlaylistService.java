@@ -12,6 +12,4 @@ public interface PlaylistService {
     Mono<Playlist> updatePlaylist(Playlist playlist, Long id);
 
     Mono<Void> deletePlaylistById(Long playlistId);
-
-    Flux<Playlist> findAll();
 }

@@ -2,6 +2,7 @@ package com.fedag.fedagmusic.service.impl;
 
 import com.fedag.fedagmusic.entities.Song;
 import com.fedag.fedagmusic.repository.SongRepository;
+import com.fedag.fedagmusic.repository.databaseClient.SongDatabaseClient;
 import com.fedag.fedagmusic.service.SongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class SongServiceImpl implements SongService {
     private final SongRepository songRepository;
+    private final SongDatabaseClient songDatabaseClient;
 
     @Override
     @Transactional
@@ -47,5 +49,4 @@ public class SongServiceImpl implements SongService {
     public Flux<Song> findAll() {
         return songRepository.findAll();
     }
-
 }
